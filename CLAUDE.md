@@ -2,6 +2,15 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## IMPORTANT: Roadmap Maintenance
+
+**Always keep `specs/roadmap.md` updated with progress.** After completing any tasks or phases:
+1. Mark completed items with `[x]` checkboxes
+2. Update status descriptions
+3. Add completion dates where applicable
+4. Document any deviations from the original plan
+5. Commit roadmap updates along with the code changes
+
 ## IMPORTANT: Git Commit Strategy
 
 **Every change must be committed to git.** Follow these rules:
