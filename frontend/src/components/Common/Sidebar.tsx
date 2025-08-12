@@ -49,6 +49,9 @@ const Sidebar = () => {
           <DrawerBody>
             <Flex flexDir="column" justify="space-between">
               <Box>
+                <Text fontSize="xl" fontWeight="bold" color="red.500" p={4}>
+                  🐼 Red Panda
+                </Text>
                 <SidebarItems onClose={() => setOpen(false)} />
                 <Flex
                   as="button"
@@ -87,6 +90,9 @@ const Sidebar = () => {
         p={4}
       >
         <Box w="100%">
+          <Text fontSize="xl" fontWeight="bold" color="red.500" mb={4}>
+            🐼 Red Panda
+          </Text>
           <SidebarItems />
         </Box>
       </Box>

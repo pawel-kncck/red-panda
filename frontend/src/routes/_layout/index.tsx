@@ -17,7 +17,16 @@ function Dashboard() {
           <Text fontSize="2xl" truncate maxW="sm">
             Hi, {currentUser?.full_name || currentUser?.email} 👋🏼
           </Text>
-          <Text>Welcome back, nice to see you again!</Text>
+          <Text>Welcome to Red Panda - Your Code Reusability Platform!</Text>
+          <Box mt={8}>
+            <Text fontSize="lg" fontWeight="semibold" mb={2}>
+              🚀 Getting Started
+            </Text>
+            <Text color="gray.600">
+              Red Panda helps you store, organize, and reuse code from your data analysis conversations.
+              Start a new conversation with an LLM, and all generated code will be automatically saved for future use.
+            </Text>
+          </Box>
         </Box>
       </Container>
     </>
