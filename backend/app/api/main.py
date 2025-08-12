@@ -9,6 +9,8 @@ from app.api.routes import (
     code_blocks,
     messages,
     files,
+    settings,
+    chat,
 )
 from app.core.config import settings
 
@@ -20,6 +22,8 @@ api_router.include_router(conversations.router)
 api_router.include_router(code_blocks.router)
 api_router.include_router(messages.router)
 api_router.include_router(files.router)
+api_router.include_router(settings.router)
+api_router.include_router(chat.router)
 
 
 if settings.ENVIRONMENT == "local":
