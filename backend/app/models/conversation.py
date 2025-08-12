@@ -1,8 +1,14 @@
 """Conversation model for Red Panda."""
 import uuid
 from datetime import datetime
+from typing import TYPE_CHECKING
 
-from sqlmodel import Field, SQLModel
+from sqlmodel import Field, SQLModel, Relationship
+
+if TYPE_CHECKING:
+    from app.models.user import User
+    from app.models.message import Message
+    from app.models.code_block import CodeBlock
 
 
 class ConversationBase(SQLModel):
@@ -29,6 +35,11 @@ class Conversation(ConversationBase, table=True):
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
     message_count: int = Field(default=0)
+    
+    # Relationships
+    user: "User" = Relationship(back_populates="conversations")
+    messages: list["Message"] = Relationship(back_populates="conversation")
+    code_blocks: list["CodeBlock"] = Relationship(back_populates="conversation")
 
 
 class ConversationPublic(ConversationBase):

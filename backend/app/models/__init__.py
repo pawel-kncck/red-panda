@@ -1,4 +1,21 @@
 """Red Panda models package."""
+from sqlmodel import SQLModel
+
+from app.models.user import (
+    User,
+    UserBase,
+    UserCreate,
+    UserPublic,
+    UsersPublic,
+    UserRegister,
+    UserUpdate,
+    UserUpdateMe,
+    UpdatePassword,
+    Token,
+    TokenPayload,
+    NewPassword,
+    AuthMessage,
+)
 from app.models.code_block import (
     CodeBlock,
     CodeBlockCreate,
@@ -32,6 +49,21 @@ from app.models.message import (
 )
 
 __all__ = [
+    "SQLModel",
+    # User
+    "User",
+    "UserBase",
+    "UserCreate",
+    "UserUpdate",
+    "UserUpdateMe",
+    "UserPublic",
+    "UsersPublic",
+    "UserRegister",
+    "UpdatePassword",
+    "Token",
+    "TokenPayload",
+    "NewPassword",
+    "AuthMessage",
     # Conversation
     "Conversation",
     "ConversationCreate",

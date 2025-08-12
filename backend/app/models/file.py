@@ -1,9 +1,13 @@
 """File model for Red Panda - CSV file uploads and management."""
 import uuid
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from sqlalchemy import Column, JSON
-from sqlmodel import Field, SQLModel
+from sqlmodel import Field, SQLModel, Relationship
+
+if TYPE_CHECKING:
+    from app.models.user import User
 
 
 class FileBase(SQLModel):
@@ -16,13 +20,13 @@ class FileBase(SQLModel):
 class FileCreate(FileBase):
     """Properties to receive on file creation."""
     storage_path: str = Field(max_length=500, description="Path where file is stored")
-    metadata: dict = Field(default={}, sa_column=Column(JSON))
+    file_metadata: dict = Field(default={}, sa_column=Column(JSON))
 
 
 class FileUpdate(SQLModel):
     """Properties to receive on file update."""
     filename: str | None = Field(default=None, max_length=255)
-    metadata: dict | None = None
+    file_metadata: dict | None = None
 
 
 class File(FileBase, table=True):
@@ -38,11 +42,14 @@ class File(FileBase, table=True):
     uploaded_at: datetime = Field(default_factory=datetime.utcnow)
     
     # Metadata for CSV files (columns, row count, etc.)
-    metadata: dict = Field(
+    file_metadata: dict = Field(
         default={}, 
         sa_column=Column(JSON),
         description="File metadata (e.g., CSV columns, row count)"
     )
+    
+    # Relationships
+    user: "User" = Relationship(back_populates="files")
 
 
 class FilePublic(FileBase):
@@ -50,7 +57,7 @@ class FilePublic(FileBase):
     id: uuid.UUID
     user_id: uuid.UUID
     uploaded_at: datetime
-    metadata: dict
+    file_metadata: dict
 
 
 class FilesPublic(SQLModel):

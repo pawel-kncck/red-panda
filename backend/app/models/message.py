@@ -2,9 +2,13 @@
 import uuid
 from datetime import datetime
 from enum import Enum
+from typing import TYPE_CHECKING
 
 from sqlalchemy import Column, JSON
-from sqlmodel import Field, SQLModel
+from sqlmodel import Field, SQLModel, Relationship
+
+if TYPE_CHECKING:
+    from app.models.conversation import Conversation
 
 
 class MessageRole(str, Enum):
@@ -48,6 +52,9 @@ class Message(MessageBase, table=True):
         sa_column=Column(JSON),
         description="IDs of code blocks extracted from this message"
     )
+    
+    # Relationships
+    conversation: "Conversation" = Relationship(back_populates="messages")
 
 
 class MessagePublic(MessageBase):

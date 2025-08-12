@@ -1,9 +1,14 @@
 """CodeBlock model for Red Panda - Core feature for code storage and reusability."""
 import uuid
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from sqlalchemy import Column, JSON
-from sqlmodel import Field, SQLModel
+from sqlmodel import Field, SQLModel, Relationship
+
+if TYPE_CHECKING:
+    from app.models.user import User
+    from app.models.conversation import Conversation
 
 
 class CodeBlockBase(SQLModel):
@@ -50,6 +55,10 @@ class CodeBlock(CodeBlockBase, table=True):
         foreign_key="codeblock.id",
         description="Reference to parent version for version tracking"
     )
+    
+    # Relationships
+    user: "User" = Relationship(back_populates="code_blocks")
+    conversation: "Conversation" = Relationship(back_populates="code_blocks")
 
 
 class CodeBlockPublic(CodeBlockBase):

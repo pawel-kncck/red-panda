@@ -85,7 +85,7 @@ def upgrade() -> None:
         sa.Column('user_id', sa.UUID(), nullable=False),
         sa.Column('storage_path', sa.String(length=500), nullable=False),
         sa.Column('uploaded_at', sa.DateTime(), nullable=False),
-        sa.Column('metadata', sa.JSON(), nullable=False, server_default='{}'),
+        sa.Column('file_metadata', sa.JSON(), nullable=False, server_default='{}'),
         sa.ForeignKeyConstraint(['user_id'], ['user.id'], ondelete='CASCADE'),
         sa.PrimaryKeyConstraint('id')
     )
