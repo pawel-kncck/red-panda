@@ -1,6 +1,7 @@
 import uuid
 
 from pydantic import EmailStr
+from sqlalchemy import Column, JSON
 from sqlmodel import Field, SQLModel
 
 
@@ -43,6 +44,18 @@ class UpdatePassword(SQLModel):
 class User(UserBase, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     hashed_password: str
+    
+    # BYOK (Bring Your Own Key) fields for LLM API access
+    api_keys: dict = Field(
+        default={}, 
+        sa_column=Column(JSON),
+        description="Encrypted API keys for LLM providers"
+    )
+    api_usage: dict = Field(
+        default={}, 
+        sa_column=Column(JSON),
+        description="Usage tracking for API calls"
+    )
 
 
 # Properties to return via API, id is always required
