@@ -202,6 +202,36 @@ DOMAIN=localhost
 - **Test users**: Created via fixtures in `conftest.py`
 - **Coverage**: Run `./scripts/test.sh` for coverage report
 
+## IMPORTANT: Frontend Testing and Debugging
+
+**Always use Playwright MCP tools for frontend testing and debugging.** When working with the frontend:
+
+1. **Use Playwright MCP for Browser Interaction**: 
+   - Use `mcp__playwright__browser_*` tools to navigate, interact with, and debug the frontend
+   - Always check console messages with `mcp__playwright__browser_console_messages` to catch JavaScript errors
+   - Take snapshots with `mcp__playwright__browser_snapshot` to understand the current state
+
+2. **Error Detection Workflow**:
+   - After making frontend changes, navigate to the affected pages
+   - Check browser console for errors immediately
+   - Fix any errors found before proceeding
+   - Verify fixes by rechecking the console
+
+3. **Benefits**:
+   - Real-time error detection from browser console
+   - Visual verification of UI changes
+   - Catch runtime errors that static analysis might miss
+   - Test user interactions and flows
+
+Example workflow:
+```
+1. Make frontend changes
+2. Use mcp__playwright__browser_navigate to open the page
+3. Use mcp__playwright__browser_console_messages to check for errors
+4. Fix any errors found
+5. Verify fixes by rechecking console and taking snapshots
+```
+
 ## Migration from Template to Red Panda
 
 When implementing Red Panda features:
