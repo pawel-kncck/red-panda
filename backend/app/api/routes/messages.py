@@ -5,12 +5,12 @@ from typing import Any, Optional
 from fastapi import APIRouter, HTTPException, status
 
 from app.api.deps import CurrentUser, SessionDep
-from app.crud.message import (
+from app.crud_ops.message import (
     create_message,
     get_messages_by_conversation,
     delete_message,
 )
-from app.crud.conversation import get_conversation
+from app.crud_ops.conversation import get_conversation
 from app.models.message import (
     MessageCreate,
     MessagePublic,

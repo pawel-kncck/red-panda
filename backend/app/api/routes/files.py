@@ -5,7 +5,7 @@ from typing import Any
 from fastapi import APIRouter, File, HTTPException, UploadFile, status
 
 from app.api.deps import CurrentUser, SessionDep
-from app.crud.file import (
+from app.crud_ops.file import (
     create_file,
     get_file,
     get_files,

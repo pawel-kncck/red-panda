@@ -9,9 +9,9 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
 from app.api.deps import CurrentUser, SessionDep
-from app.crud.conversation import get_conversation, update_conversation
-from app.crud.message import create_message, get_messages_by_conversation
-from app.crud.code_block import create_code_block
+from app.crud_ops.conversation import get_conversation, update_conversation
+from app.crud_ops.message import create_message, get_messages_by_conversation
+from app.crud_ops.code_block import create_code_block
 from app.models.message import MessageCreate, MessageRole
 from app.models.code_block import CodeBlockCreate
 from app.models.conversation import ConversationUpdate

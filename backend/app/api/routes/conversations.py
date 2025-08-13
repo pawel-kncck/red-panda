@@ -6,7 +6,7 @@ from fastapi import APIRouter, HTTPException, status
 from sqlmodel import func, select
 
 from app.api.deps import CurrentUser, SessionDep
-from app.crud.conversation import (
+from app.crud_ops.conversation import (
     create_conversation,
     get_conversation,
     get_conversations,

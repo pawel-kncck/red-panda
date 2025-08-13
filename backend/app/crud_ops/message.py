@@ -10,7 +10,7 @@ from app.models.message import (
     Message,
     MessageCreate,
 )
-from app.crud.conversation import update_message_count
+from app.crud_ops.conversation import update_message_count
 
 
 def create_message(

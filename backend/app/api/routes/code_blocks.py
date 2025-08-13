@@ -5,7 +5,7 @@ from typing import Any, Optional
 from fastapi import APIRouter, HTTPException, Query, status
 
 from app.api.deps import CurrentUser, SessionDep
-from app.crud.code_block import (
+from app.crud_ops.code_block import (
     create_code_block,
     get_code_block,
     get_code_blocks,
