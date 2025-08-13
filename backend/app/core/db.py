@@ -4,7 +4,12 @@ from app import crud
 from app.core.config import settings
 from app.models import User, UserCreate
 
-engine = create_engine(str(settings.SQLALCHEMY_DATABASE_URI))
+# Temporarily use SQLite for development if PostgreSQL is not available
+import os
+if os.getenv("USE_SQLITE", "false").lower() == "true":
+    engine = create_engine("sqlite:///./app.db", connect_args={"check_same_thread": False})
+else:
+    engine = create_engine(str(settings.SQLALCHEMY_DATABASE_URI))
 
 
 # make sure all SQLModel models are imported (app.models) before initializing DB
@@ -16,10 +21,13 @@ def init_db(session: Session) -> None:
     # Tables should be created with Alembic migrations
     # But if you don't want to use migrations, create
     # the tables un-commenting the next lines
-    # from sqlmodel import SQLModel
+    from sqlmodel import SQLModel
 
     # This works because the models are already imported and registered from app.models
-    # SQLModel.metadata.create_all(engine)
+    # For SQLite development, create tables directly
+    import os
+    if os.getenv("USE_SQLITE", "false").lower() == "true":
+        SQLModel.metadata.create_all(engine)
 
     user = session.exec(
         select(User).where(User.email == settings.FIRST_SUPERUSER)

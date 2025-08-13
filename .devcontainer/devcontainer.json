@@ -1,20 +1,20 @@
-// .devcontainer/devcontainer.json
+// .devcontainer/devcontainer.json (for Python-base alternative)
 {
   "name": "Isolated YOLO Dev",
-  "build": { "dockerfile": "Dockerfile", "context": ".." },
-
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
   "workspaceFolder": "/workspace",
-
   "mounts": [
     // VS Code Server needs writable directories
-    "source=red-panda-vscode-server,target=/home/node/.vscode-server,type=volume",
-    "source=red-panda-vscode-server-insiders,target=/home/node/.vscode-server-insiders,type=volume",
-    "source=red-panda-vscode-extensions,target=/home/node/.vscode-server/extensions,type=volume",
+    "source=red-panda-vscode-server,target=/home/developer/.vscode-server,type=volume",
+    "source=red-panda-vscode-server-insiders,target=/home/developer/.vscode-server-insiders,type=volume",
+    "source=red-panda-vscode-extensions,target=/home/developer/.vscode-server/extensions,type=volume",
     // Mount the entire home directory as a volume to allow config files
-    "source=red-panda-home,target=/home/node,type=volume"
+    "source=red-panda-home,target=/home/developer,type=volume"
   ],
-
   "runArgs": [
     "--cap-drop=ALL",
     "--security-opt",
@@ -26,18 +26,19 @@
     "--tmpfs",
     "/tmp:rw,nosuid,nodev,mode=1777"
   ],
-
-  "containerUser": "node",
-  "remoteUser": "node",
-
+  "containerUser": "developer",
+  "remoteUser": "developer",
   "containerEnv": {
     "IS_SANDBOX": "1",
     "ANTHROPIC_API_KEY": "${localEnv:ANTHROPIC_API_KEY}"
   },
-
-  "postCreateCommand": "bash -lc \"if [ -f package-lock.json ]; then npm ci || npm i; fi\"",
-
+  "postCreateCommand": "echo 'alias claude=\"claude-code --dangerously-skip-permissions\"' >> ~/.bashrc && bash -lc \"if [ -f package-lock.json ]; then npm ci || npm i; fi && if [ -f requirements.txt ]; then pip install -r requirements.txt; fi\"",
   "customizations": {
-    "vscode": { "extensions": ["dbaeumer.vscode-eslint"] }
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "ms-python.python"
+      ]
+    }
   }
 }
