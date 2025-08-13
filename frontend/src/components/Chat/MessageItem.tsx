@@ -1,0 +1,90 @@
+import { Box, Flex, Text, IconButton, useToast } from "@chakra-ui/react"
+import { FiCopy, FiSave } from "react-icons/fi"
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import { CodeBlock } from './CodeBlock'
+import type { Message, MessageRole } from '@/types'
+
+interface MessageItemProps {
+  message: Message
+  onSaveCode?: (code: string, description: string) => void
+}
+
+export const MessageItem = ({ message, onSaveCode }: MessageItemProps) => {
+  const toast = useToast()
+  const isUser = message.role === MessageRole.USER
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text)
+    toast({
+      title: "Copied to clipboard",
+      status: "success",
+      duration: 2000,
+    })
+  }
+
+  return (
+    <Flex 
+      gap={3} 
+      p={4}
+      bg={isUser ? "blue.50" : "gray.50"}
+      _dark={{
+        bg: isUser ? "blue.900" : "gray.800"
+      }}
+    >
+      <Box 
+        w={8} 
+        h={8} 
+        borderRadius="full" 
+        bg={isUser ? "blue.500" : "brand.500"}
+        color="white"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        fontSize="sm"
+        fontWeight="bold"
+        flexShrink={0}
+      >
+        {isUser ? "U" : "AI"}
+      </Box>
+
+      <Box flex="1">
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          components={{
+            code({ node, inline, className, children, ...props }) {
+              const match = /language-(\w+)/.exec(className || '')
+              const language = match ? match[1] : 'text'
+              const codeString = String(children).replace(/\n$/, '')
+              
+              if (!inline && match) {
+                return (
+                  <CodeBlock
+                    code={codeString}
+                    language={language}
+                    onCopy={() => copyToClipboard(codeString)}
+                    onSave={onSaveCode ? () => onSaveCode(codeString, '') : undefined}
+                  />
+                )
+              }
+              
+              return (
+                <Text as="code" bg="gray.100" _dark={{ bg: "gray.700" }} px={1} borderRadius="sm" {...props}>
+                  {children}
+                </Text>
+              )
+            }
+          }}
+        >
+          {message.content}
+        </ReactMarkdown>
+
+        {message.code_block_ids && message.code_block_ids.length > 0 && (
+          <Text fontSize="xs" color="gray.500" mt={2}>
+            {message.code_block_ids.length} code block(s) saved
+          </Text>
+        )}
+      </Box>
+    </Flex>
+  )
+}

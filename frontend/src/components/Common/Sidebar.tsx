@@ -14,7 +14,7 @@ import {
   DrawerRoot,
   DrawerTrigger,
 } from "../ui/drawer"
-import SidebarItems from "./SidebarItems"
+import { ConversationSidebar } from "./ConversationSidebar"
 
 const Sidebar = () => {
   const queryClient = useQueryClient()
@@ -52,7 +52,7 @@ const Sidebar = () => {
                 <Text fontSize="xl" fontWeight="bold" color="red.500" p={4}>
                   🐼 Red Panda
                 </Text>
-                <SidebarItems onClose={() => setOpen(false)} />
+                <ConversationSidebar onClose={() => setOpen(false)} />
                 <Flex
                   as="button"
                   onClick={() => {
@@ -93,7 +93,7 @@ const Sidebar = () => {
           <Text fontSize="xl" fontWeight="bold" color="red.500" mb={4}>
             🐼 Red Panda
           </Text>
-          <SidebarItems />
+          <ConversationSidebar />
         </Box>
       </Box>
     </>

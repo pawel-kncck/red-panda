@@ -18,7 +18,11 @@ import { Route as LoginImport } from './routes/login'
 import { Route as LayoutImport } from './routes/_layout'
 import { Route as LayoutIndexImport } from './routes/_layout/index'
 import { Route as LayoutSettingsImport } from './routes/_layout/settings'
+import { Route as LayoutLibraryImport } from './routes/_layout/library'
+import { Route as LayoutFilesImport } from './routes/_layout/files'
+import { Route as LayoutChatImport } from './routes/_layout/chat'
 import { Route as LayoutAdminImport } from './routes/_layout/admin'
+import { Route as LayoutChatConversationIdImport } from './routes/_layout/chat/$conversationId'
 
 // Create/Update Routes
 
@@ -57,9 +61,29 @@ const LayoutSettingsRoute = LayoutSettingsImport.update({
   getParentRoute: () => LayoutRoute,
 } as any)
 
+const LayoutLibraryRoute = LayoutLibraryImport.update({
+  path: '/library',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutFilesRoute = LayoutFilesImport.update({
+  path: '/files',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutChatRoute = LayoutChatImport.update({
+  path: '/chat',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
 const LayoutAdminRoute = LayoutAdminImport.update({
   path: '/admin',
   getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutChatConversationIdRoute = LayoutChatConversationIdImport.update({
+  path: '/$conversationId',
+  getParentRoute: () => LayoutChatRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -90,6 +114,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutAdminImport
       parentRoute: typeof LayoutImport
     }
+    '/_layout/chat': {
+      preLoaderRoute: typeof LayoutChatImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/files': {
+      preLoaderRoute: typeof LayoutFilesImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/library': {
+      preLoaderRoute: typeof LayoutLibraryImport
+      parentRoute: typeof LayoutImport
+    }
     '/_layout/settings': {
       preLoaderRoute: typeof LayoutSettingsImport
       parentRoute: typeof LayoutImport
@@ -97,6 +133,10 @@ declare module '@tanstack/react-router' {
     '/_layout/': {
       preLoaderRoute: typeof LayoutIndexImport
       parentRoute: typeof LayoutImport
+    }
+    '/_layout/chat/$conversationId': {
+      preLoaderRoute: typeof LayoutChatConversationIdImport
+      parentRoute: typeof LayoutChatImport
     }
   }
 }
@@ -106,6 +146,9 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren([
   LayoutRoute.addChildren([
     LayoutAdminRoute,
+    LayoutChatRoute.addChildren([LayoutChatConversationIdRoute]),
+    LayoutFilesRoute,
+    LayoutLibraryRoute,
     LayoutSettingsRoute,
     LayoutIndexRoute,
   ]),
