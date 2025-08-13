@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Frontend Test</title>
+</head>
+<body>
+    <h1>Testing Frontend</h1>
+    <div id="test"></div>
+    <script>
+        // Test if we can fetch from the frontend
+        console.log('Testing frontend access...');
+        
+        fetch('http://localhost:5175/')
+            .then(response => response.text())
+            .then(html => {
+                console.log('Frontend HTML received, length:', html.length);
+                document.getElementById('test').innerHTML = 'Frontend accessible';
+            })
+            .catch(error => {
+                console.error('Frontend error:', error);
+                document.getElementById('test').innerHTML = 'Frontend error: ' + error.message;
+            });
+            
+        // Test API access
+        fetch('http://localhost:5175/api/v1/users/me')
+            .then(response => response.json())
+            .then(data => {
+                console.log('API response:', data);
+            })
+            .catch(error => {
+                console.log('API error (expected without auth):', error.message);
+            });
+    </script>
+</body>
+</html>

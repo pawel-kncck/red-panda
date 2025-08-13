@@ -4,587 +4,587 @@
  * Request model for setting API key.
  */
 export type APIKeyRequest = {
-    provider: LLMProvider;
-    api_key: string;
-};
+  provider: LLMProvider
+  api_key: string
+}
 
 /**
  * Response model for API key operations.
  */
 export type APIKeyResponse = {
-    provider: string;
-    is_valid: boolean;
-    message: string;
-};
+  provider: string
+  is_valid: boolean
+  message: string
+}
 
 /**
  * Status of all API keys.
  */
 export type APIKeysStatus = {
-    openai: boolean;
-    anthropic: boolean;
-};
+  openai: boolean
+  anthropic: boolean
+}
 
 export type AuthMessage = {
-    message: string;
-};
+  message: string
+}
 
 export type Body_files_upload_file = {
-    file: (Blob | File);
-};
+  file: Blob | File
+}
 
 export type Body_login_login_access_token = {
-    grant_type?: (string | null);
-    username: string;
-    password: string;
-    scope?: string;
-    client_id?: (string | null);
-    client_secret?: (string | null);
-};
+  grant_type?: string | null
+  username: string
+  password: string
+  scope?: string
+  client_id?: string | null
+  client_secret?: string | null
+}
 
 /**
  * Request model for chat completion.
  */
 export type ChatRequest = {
-    conversation_id: string;
-    message: string;
-    provider?: LLMProvider;
-    model?: (string | null);
-    temperature?: number;
-    max_tokens?: (number | null);
-    stream?: boolean;
-};
+  conversation_id: string
+  message: string
+  provider?: LLMProvider
+  model?: string | null
+  temperature?: number
+  max_tokens?: number | null
+  stream?: boolean
+}
 
 /**
  * Response model for non-streaming chat.
  */
 export type ChatResponse = {
-    message_id: string;
-    content: string;
-    code_blocks?: Array<{
-        [key: string]: unknown;
-    }>;
-};
+  message_id: string
+  content: string
+  code_blocks?: Array<{
+    [key: string]: unknown
+  }>
+}
 
 /**
  * Properties to receive on code block creation.
  */
 export type CodeBlockCreate = {
-    /**
-     * The actual code content
-     */
-    code: string;
-    /**
-     * Auto-generated description of what the code does
-     */
-    description?: (string | null);
-    language?: string;
-    executed_successfully?: (boolean | null);
-    conversation_id: string;
-    tags?: Array<(string)>;
-    imports?: Array<(string)>;
-    functions_defined?: Array<(string)>;
-    variables_created?: Array<(string)>;
-};
+  /**
+   * The actual code content
+   */
+  code: string
+  /**
+   * Auto-generated description of what the code does
+   */
+  description?: string | null
+  language?: string
+  executed_successfully?: boolean | null
+  conversation_id: string
+  tags?: Array<string>
+  imports?: Array<string>
+  functions_defined?: Array<string>
+  variables_created?: Array<string>
+}
 
 /**
  * Properties to return via API.
  */
 export type CodeBlockPublic = {
-    /**
-     * The actual code content
-     */
-    code: string;
-    /**
-     * Auto-generated description of what the code does
-     */
-    description?: (string | null);
-    language?: string;
-    executed_successfully?: (boolean | null);
-    id: string;
-    conversation_id: string;
-    user_id: string;
-    created_at: string;
-    imports: Array<(string)>;
-    functions_defined: Array<(string)>;
-    variables_created: Array<(string)>;
-    tags: Array<(string)>;
-    version: number;
-    parent_version_id: (string | null);
-};
+  /**
+   * The actual code content
+   */
+  code: string
+  /**
+   * Auto-generated description of what the code does
+   */
+  description?: string | null
+  language?: string
+  executed_successfully?: boolean | null
+  id: string
+  conversation_id: string
+  user_id: string
+  created_at: string
+  imports: Array<string>
+  functions_defined: Array<string>
+  variables_created: Array<string>
+  tags: Array<string>
+  version: number
+  parent_version_id: string | null
+}
 
 /**
  * List of code blocks to return via API.
  */
 export type CodeBlocksPublic = {
-    data: Array<CodeBlockPublic>;
-    count: number;
-};
+  data: Array<CodeBlockPublic>
+  count: number
+}
 
 /**
  * Properties to receive on code block update.
  */
 export type CodeBlockUpdate = {
-    description?: (string | null);
-    executed_successfully?: (boolean | null);
-    tags?: (Array<(string)> | null);
-};
+  description?: string | null
+  executed_successfully?: boolean | null
+  tags?: Array<string> | null
+}
 
 /**
  * Properties to receive on conversation creation.
  */
 export type ConversationCreate = {
-    title: string;
-    last_message_preview?: (string | null);
-};
+  title: string
+  last_message_preview?: string | null
+}
 
 /**
  * Properties to return via API.
  */
 export type ConversationPublic = {
-    title: string;
-    last_message_preview?: (string | null);
-    id: string;
-    user_id: string;
-    created_at: string;
-    updated_at: string;
-    message_count: number;
-};
+  title: string
+  last_message_preview?: string | null
+  id: string
+  user_id: string
+  created_at: string
+  updated_at: string
+  message_count: number
+}
 
 /**
  * List of conversations to return via API.
  */
 export type ConversationsPublic = {
-    data: Array<ConversationPublic>;
-    count: number;
-};
+  data: Array<ConversationPublic>
+  count: number
+}
 
 /**
  * Properties to receive on conversation update.
  */
 export type ConversationUpdate = {
-    title?: (string | null);
-    last_message_preview?: (string | null);
-};
+  title?: string | null
+  last_message_preview?: string | null
+}
 
 /**
  * Properties to return via API.
  */
 export type FilePublic = {
-    /**
-     * Original filename
-     */
-    filename: string;
-    /**
-     * MIME type of the file
-     */
-    mime_type: string;
-    /**
-     * File size in bytes
-     */
-    size_bytes: number;
-    id: string;
-    user_id: string;
-    uploaded_at: string;
-    file_metadata: {
-        [key: string]: unknown;
-    };
-};
+  /**
+   * Original filename
+   */
+  filename: string
+  /**
+   * MIME type of the file
+   */
+  mime_type: string
+  /**
+   * File size in bytes
+   */
+  size_bytes: number
+  id: string
+  user_id: string
+  uploaded_at: string
+  file_metadata: {
+    [key: string]: unknown
+  }
+}
 
 /**
  * List of files to return via API.
  */
 export type FilesPublic = {
-    data: Array<FilePublic>;
-    count: number;
-};
+  data: Array<FilePublic>
+  count: number
+}
 
 export type HTTPValidationError = {
-    detail?: Array<ValidationError>;
-};
+  detail?: Array<ValidationError>
+}
 
 /**
  * Supported LLM providers.
  */
-export type LLMProvider = 'openai' | 'anthropic';
+export type LLMProvider = "openai" | "anthropic"
 
 /**
  * Properties to receive on message creation.
  */
 export type MessageCreate = {
-    /**
-     * Role of the message sender
-     */
-    role: MessageRole;
-    /**
-     * Message content
-     */
-    content: string;
-    conversation_id: string;
-    code_block_ids?: Array<(string)>;
-};
+  /**
+   * Role of the message sender
+   */
+  role: MessageRole
+  /**
+   * Message content
+   */
+  content: string
+  conversation_id: string
+  code_block_ids?: Array<string>
+}
 
 /**
  * Properties to return via API.
  */
 export type MessagePublic = {
-    /**
-     * Role of the message sender
-     */
-    role: MessageRole;
-    /**
-     * Message content
-     */
-    content: string;
-    id: string;
-    conversation_id: string;
-    created_at: string;
-    code_block_ids: Array<(string)>;
-};
+  /**
+   * Role of the message sender
+   */
+  role: MessageRole
+  /**
+   * Message content
+   */
+  content: string
+  id: string
+  conversation_id: string
+  created_at: string
+  code_block_ids: Array<string>
+}
 
 /**
  * Role of the message sender.
  */
-export type MessageRole = 'user' | 'assistant' | 'system';
+export type MessageRole = "user" | "assistant" | "system"
 
 /**
  * List of messages to return via API.
  */
 export type MessagesPublic = {
-    data: Array<MessagePublic>;
-    count: number;
-};
+  data: Array<MessagePublic>
+  count: number
+}
 
 export type NewPassword = {
-    token: string;
-    new_password: string;
-};
+  token: string
+  new_password: string
+}
 
 export type PrivateUserCreate = {
-    email: string;
-    password: string;
-    full_name: string;
-    is_verified?: boolean;
-};
+  email: string
+  password: string
+  full_name: string
+  is_verified?: boolean
+}
 
 export type Token = {
-    access_token: string;
-    token_type?: string;
-};
+  access_token: string
+  token_type?: string
+}
 
 export type UpdatePassword = {
-    current_password: string;
-    new_password: string;
-};
+  current_password: string
+  new_password: string
+}
 
 export type UserCreate = {
-    email: string;
-    is_active?: boolean;
-    is_superuser?: boolean;
-    full_name?: (string | null);
-    password: string;
-};
+  email: string
+  is_active?: boolean
+  is_superuser?: boolean
+  full_name?: string | null
+  password: string
+}
 
 export type UserPublic = {
-    email: string;
-    is_active?: boolean;
-    is_superuser?: boolean;
-    full_name?: (string | null);
-    id: string;
-};
+  email: string
+  is_active?: boolean
+  is_superuser?: boolean
+  full_name?: string | null
+  id: string
+}
 
 export type UserRegister = {
-    email: string;
-    password: string;
-    full_name?: (string | null);
-};
+  email: string
+  password: string
+  full_name?: string | null
+}
 
 export type UsersPublic = {
-    data: Array<UserPublic>;
-    count: number;
-};
+  data: Array<UserPublic>
+  count: number
+}
 
 export type UserUpdate = {
-    email?: (string | null);
-    is_active?: boolean;
-    is_superuser?: boolean;
-    full_name?: (string | null);
-    password?: (string | null);
-};
+  email?: string | null
+  is_active?: boolean
+  is_superuser?: boolean
+  full_name?: string | null
+  password?: string | null
+}
 
 export type UserUpdateMe = {
-    full_name?: (string | null);
-    email?: (string | null);
-};
+  full_name?: string | null
+  email?: string | null
+}
 
 export type ValidationError = {
-    loc: Array<(string | number)>;
-    msg: string;
-    type: string;
-};
+  loc: Array<string | number>
+  msg: string
+  type: string
+}
 
 export type ChatChatCompletionData = {
-    requestBody: ChatRequest;
-};
+  requestBody: ChatRequest
+}
 
-export type ChatChatCompletionResponse = (ChatResponse);
+export type ChatChatCompletionResponse = ChatResponse
 
 export type ChatChatStreamData = {
-    requestBody: ChatRequest;
-};
+  requestBody: ChatRequest
+}
 
-export type ChatChatStreamResponse = (unknown);
+export type ChatChatStreamResponse = unknown
 
 export type CodeBlocksCreateNewCodeBlockData = {
-    requestBody: CodeBlockCreate;
-};
+  requestBody: CodeBlockCreate
+}
 
-export type CodeBlocksCreateNewCodeBlockResponse = (CodeBlockPublic);
+export type CodeBlocksCreateNewCodeBlockResponse = CodeBlockPublic
 
 export type CodeBlocksReadCodeBlocksData = {
-    conversationId?: (string | null);
-    limit?: number;
-    skip?: number;
-};
+  conversationId?: string | null
+  limit?: number
+  skip?: number
+}
 
-export type CodeBlocksReadCodeBlocksResponse = (CodeBlocksPublic);
+export type CodeBlocksReadCodeBlocksResponse = CodeBlocksPublic
 
 export type CodeBlocksSearchUserCodeBlocksData = {
-    /**
-     * Filter by language
-     */
-    language?: (string | null);
-    limit?: number;
-    /**
-     * Search query
-     */
-    q?: string;
-    skip?: number;
-    /**
-     * Filter by tags
-     */
-    tags?: (Array<(string)> | null);
-};
+  /**
+   * Filter by language
+   */
+  language?: string | null
+  limit?: number
+  /**
+   * Search query
+   */
+  q?: string
+  skip?: number
+  /**
+   * Filter by tags
+   */
+  tags?: Array<string> | null
+}
 
-export type CodeBlocksSearchUserCodeBlocksResponse = (CodeBlocksPublic);
+export type CodeBlocksSearchUserCodeBlocksResponse = CodeBlocksPublic
 
 export type CodeBlocksReadConversationCodeBlocksData = {
-    conversationId: string;
-};
+  conversationId: string
+}
 
-export type CodeBlocksReadConversationCodeBlocksResponse = (CodeBlocksPublic);
+export type CodeBlocksReadConversationCodeBlocksResponse = CodeBlocksPublic
 
 export type CodeBlocksReadCodeBlockData = {
-    codeBlockId: string;
-};
+  codeBlockId: string
+}
 
-export type CodeBlocksReadCodeBlockResponse = (CodeBlockPublic);
+export type CodeBlocksReadCodeBlockResponse = CodeBlockPublic
 
 export type CodeBlocksUpdateExistingCodeBlockData = {
-    codeBlockId: string;
-    requestBody: CodeBlockUpdate;
-};
+  codeBlockId: string
+  requestBody: CodeBlockUpdate
+}
 
-export type CodeBlocksUpdateExistingCodeBlockResponse = (CodeBlockPublic);
+export type CodeBlocksUpdateExistingCodeBlockResponse = CodeBlockPublic
 
 export type CodeBlocksDeleteExistingCodeBlockData = {
-    codeBlockId: string;
-};
+  codeBlockId: string
+}
 
-export type CodeBlocksDeleteExistingCodeBlockResponse = (unknown);
+export type CodeBlocksDeleteExistingCodeBlockResponse = unknown
 
 export type ConversationsCreateNewConversationData = {
-    requestBody: ConversationCreate;
-};
+  requestBody: ConversationCreate
+}
 
-export type ConversationsCreateNewConversationResponse = (ConversationPublic);
+export type ConversationsCreateNewConversationResponse = ConversationPublic
 
 export type ConversationsReadConversationsData = {
-    limit?: number;
-    skip?: number;
-};
+  limit?: number
+  skip?: number
+}
 
-export type ConversationsReadConversationsResponse = (ConversationsPublic);
+export type ConversationsReadConversationsResponse = ConversationsPublic
 
 export type ConversationsReadConversationData = {
-    conversationId: string;
-};
+  conversationId: string
+}
 
-export type ConversationsReadConversationResponse = (ConversationPublic);
+export type ConversationsReadConversationResponse = ConversationPublic
 
 export type ConversationsUpdateExistingConversationData = {
-    conversationId: string;
-    requestBody: ConversationUpdate;
-};
+  conversationId: string
+  requestBody: ConversationUpdate
+}
 
-export type ConversationsUpdateExistingConversationResponse = (ConversationPublic);
+export type ConversationsUpdateExistingConversationResponse = ConversationPublic
 
 export type ConversationsDeleteExistingConversationData = {
-    conversationId: string;
-};
+  conversationId: string
+}
 
-export type ConversationsDeleteExistingConversationResponse = (unknown);
+export type ConversationsDeleteExistingConversationResponse = unknown
 
 export type FilesUploadFileData = {
-    formData: Body_files_upload_file;
-};
+  formData: Body_files_upload_file
+}
 
-export type FilesUploadFileResponse = (FilePublic);
+export type FilesUploadFileResponse = FilePublic
 
 export type FilesReadFilesData = {
-    limit?: number;
-    skip?: number;
-};
+  limit?: number
+  skip?: number
+}
 
-export type FilesReadFilesResponse = (FilesPublic);
+export type FilesReadFilesResponse = FilesPublic
 
 export type FilesReadFileData = {
-    fileId: string;
-};
+  fileId: string
+}
 
-export type FilesReadFileResponse = (FilePublic);
+export type FilesReadFileResponse = FilePublic
 
 export type FilesDeleteUploadedFileData = {
-    fileId: string;
-};
+  fileId: string
+}
 
-export type FilesDeleteUploadedFileResponse = (unknown);
+export type FilesDeleteUploadedFileResponse = unknown
 
 export type FilesReadFileContentData = {
-    fileId: string;
-    maxRows?: number;
-};
+  fileId: string
+  maxRows?: number
+}
 
-export type FilesReadFileContentResponse = (unknown);
+export type FilesReadFileContentResponse = unknown
 
 export type LoginLoginAccessTokenData = {
-    formData: Body_login_login_access_token;
-};
+  formData: Body_login_login_access_token
+}
 
-export type LoginLoginAccessTokenResponse = (Token);
+export type LoginLoginAccessTokenResponse = Token
 
-export type LoginTestTokenResponse = (UserPublic);
+export type LoginTestTokenResponse = UserPublic
 
 export type LoginRecoverPasswordData = {
-    email: string;
-};
+  email: string
+}
 
-export type LoginRecoverPasswordResponse = (AuthMessage);
+export type LoginRecoverPasswordResponse = AuthMessage
 
 export type LoginResetPasswordData = {
-    requestBody: NewPassword;
-};
+  requestBody: NewPassword
+}
 
-export type LoginResetPasswordResponse = (AuthMessage);
+export type LoginResetPasswordResponse = AuthMessage
 
 export type LoginRecoverPasswordHtmlContentData = {
-    email: string;
-};
+  email: string
+}
 
-export type LoginRecoverPasswordHtmlContentResponse = (string);
+export type LoginRecoverPasswordHtmlContentResponse = string
 
 export type MessagesCreateNewMessageData = {
-    conversationId: string;
-    requestBody: MessageCreate;
-};
+  conversationId: string
+  requestBody: MessageCreate
+}
 
-export type MessagesCreateNewMessageResponse = (MessagePublic);
+export type MessagesCreateNewMessageResponse = MessagePublic
 
 export type MessagesReadMessagesData = {
-    conversationId: string;
-    limit?: (number | null);
-    skip?: number;
-};
+  conversationId: string
+  limit?: number | null
+  skip?: number
+}
 
-export type MessagesReadMessagesResponse = (MessagesPublic);
+export type MessagesReadMessagesResponse = MessagesPublic
 
 export type MessagesDeleteExistingMessageData = {
-    conversationId: string;
-    messageId: string;
-};
+  conversationId: string
+  messageId: string
+}
 
-export type MessagesDeleteExistingMessageResponse = (unknown);
+export type MessagesDeleteExistingMessageResponse = unknown
 
 export type PrivateCreateUserData = {
-    requestBody: PrivateUserCreate;
-};
+  requestBody: PrivateUserCreate
+}
 
-export type PrivateCreateUserResponse = (UserPublic);
+export type PrivateCreateUserResponse = UserPublic
 
 export type SettingsSetApiKeyData = {
-    requestBody: APIKeyRequest;
-};
+  requestBody: APIKeyRequest
+}
 
-export type SettingsSetApiKeyResponse = (APIKeyResponse);
+export type SettingsSetApiKeyResponse = APIKeyResponse
 
-export type SettingsGetApiKeysStatusResponse = (APIKeysStatus);
+export type SettingsGetApiKeysStatusResponse = APIKeysStatus
 
 export type SettingsDeleteApiKeyData = {
-    provider: LLMProvider;
-};
+  provider: LLMProvider
+}
 
-export type SettingsDeleteApiKeyResponse = (unknown);
+export type SettingsDeleteApiKeyResponse = unknown
 
-export type SettingsGetApiUsageResponse = (unknown);
+export type SettingsGetApiUsageResponse = unknown
 
 export type UsersReadUsersData = {
-    limit?: number;
-    skip?: number;
-};
+  limit?: number
+  skip?: number
+}
 
-export type UsersReadUsersResponse = (UsersPublic);
+export type UsersReadUsersResponse = UsersPublic
 
 export type UsersCreateUserData = {
-    requestBody: UserCreate;
-};
+  requestBody: UserCreate
+}
 
-export type UsersCreateUserResponse = (UserPublic);
+export type UsersCreateUserResponse = UserPublic
 
-export type UsersReadUserMeResponse = (UserPublic);
+export type UsersReadUserMeResponse = UserPublic
 
-export type UsersDeleteUserMeResponse = (AuthMessage);
+export type UsersDeleteUserMeResponse = AuthMessage
 
 export type UsersUpdateUserMeData = {
-    requestBody: UserUpdateMe;
-};
+  requestBody: UserUpdateMe
+}
 
-export type UsersUpdateUserMeResponse = (UserPublic);
+export type UsersUpdateUserMeResponse = UserPublic
 
 export type UsersUpdatePasswordMeData = {
-    requestBody: UpdatePassword;
-};
+  requestBody: UpdatePassword
+}
 
-export type UsersUpdatePasswordMeResponse = (AuthMessage);
+export type UsersUpdatePasswordMeResponse = AuthMessage
 
 export type UsersRegisterUserData = {
-    requestBody: UserRegister;
-};
+  requestBody: UserRegister
+}
 
-export type UsersRegisterUserResponse = (UserPublic);
+export type UsersRegisterUserResponse = UserPublic
 
 export type UsersReadUserByIdData = {
-    userId: string;
-};
+  userId: string
+}
 
-export type UsersReadUserByIdResponse = (UserPublic);
+export type UsersReadUserByIdResponse = UserPublic
 
 export type UsersUpdateUserData = {
-    requestBody: UserUpdate;
-    userId: string;
-};
+  requestBody: UserUpdate
+  userId: string
+}
 
-export type UsersUpdateUserResponse = (UserPublic);
+export type UsersUpdateUserResponse = UserPublic
 
 export type UsersDeleteUserData = {
-    userId: string;
-};
+  userId: string
+}
 
-export type UsersDeleteUserResponse = (AuthMessage);
+export type UsersDeleteUserResponse = AuthMessage
 
 export type UtilsTestEmailData = {
-    emailTo: string;
-};
+  emailTo: string
+}
 
-export type UtilsTestEmailResponse = (AuthMessage);
+export type UtilsTestEmailResponse = AuthMessage
 
-export type UtilsHealthCheckResponse = (boolean);
+export type UtilsHealthCheckResponse = boolean

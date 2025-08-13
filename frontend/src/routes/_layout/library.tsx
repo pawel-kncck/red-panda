@@ -1,10 +1,5 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { CodeLibraryPage } from '@/components/CodeLibrary/CodeLibraryPage'
+import { createFileRoute } from "@tanstack/react-router"
 
-export const Route = createFileRoute('/_layout/library')({
-  component: CodeLibrary,
+export const Route = createFileRoute("/_layout/library")({
+  component: () => <div>Hello /_layout/library!</div>,
 })
-
-function CodeLibrary() {
-  return <CodeLibraryPage />
-}

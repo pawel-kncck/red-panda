@@ -1,9 +1,10 @@
-import { Box, Flex, Text, IconButton, useToast } from "@chakra-ui/react"
-import { FiCopy, FiSave } from "react-icons/fi"
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-import { CodeBlock } from './CodeBlock'
-import type { Message, MessageRole } from '@/types'
+import type { Message } from "@/types"
+import { MessageRole } from "@/types"
+import { Box, Flex, Text } from "@chakra-ui/react"
+import { toaster } from "@/components/ui/toaster"
+import ReactMarkdown from "react-markdown"
+import remarkGfm from "remark-gfm"
+import { CodeBlock } from "./CodeBlock"
 
 interface MessageItemProps {
   message: Message
@@ -11,12 +12,11 @@ interface MessageItemProps {
 }
 
 export const MessageItem = ({ message, onSaveCode }: MessageItemProps) => {
-  const toast = useToast()
   const isUser = message.role === MessageRole.USER
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text)
-    toast({
+    toaster.create({
       title: "Copied to clipboard",
       status: "success",
       duration: 2000,
@@ -24,18 +24,18 @@ export const MessageItem = ({ message, onSaveCode }: MessageItemProps) => {
   }
 
   return (
-    <Flex 
-      gap={3} 
+    <Flex
+      gap={3}
       p={4}
       bg={isUser ? "blue.50" : "gray.50"}
       _dark={{
-        bg: isUser ? "blue.900" : "gray.800"
+        bg: isUser ? "blue.900" : "gray.800",
       }}
     >
-      <Box 
-        w={8} 
-        h={8} 
-        borderRadius="full" 
+      <Box
+        w={8}
+        h={8}
+        borderRadius="full"
         bg={isUser ? "blue.500" : "brand.500"}
         color="white"
         display="flex"
@@ -52,28 +52,36 @@ export const MessageItem = ({ message, onSaveCode }: MessageItemProps) => {
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           components={{
-            code({ node, inline, className, children, ...props }) {
-              const match = /language-(\w+)/.exec(className || '')
-              const language = match ? match[1] : 'text'
-              const codeString = String(children).replace(/\n$/, '')
-              
+            code({ inline, className, children }) {
+              const match = /language-(\w+)/.exec(className || "")
+              const language = match ? match[1] : "text"
+              const codeString = String(children).replace(/\n$/, "")
+
               if (!inline && match) {
                 return (
                   <CodeBlock
                     code={codeString}
                     language={language}
                     onCopy={() => copyToClipboard(codeString)}
-                    onSave={onSaveCode ? () => onSaveCode(codeString, '') : undefined}
+                    onSave={
+                      onSaveCode ? () => onSaveCode(codeString, "") : undefined
+                    }
                   />
                 )
               }
-              
+
               return (
-                <Text as="code" bg="gray.100" _dark={{ bg: "gray.700" }} px={1} borderRadius="sm" {...props}>
+                <Text
+                  as="code"
+                  bg="gray.100"
+                  _dark={{ bg: "gray.700" }}
+                  px={1}
+                  borderRadius="sm"
+                >
                   {children}
                 </Text>
               )
-            }
+            },
           }}
         >
           {message.content}

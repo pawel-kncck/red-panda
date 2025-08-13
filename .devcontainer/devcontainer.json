@@ -26,6 +26,20 @@
     "--tmpfs",
     "/tmp:rw,nosuid,nodev,mode=1777"
   ],
+  "forwardPorts": [
+    5176,
+    8000
+  ],
+  "portsAttributes": {
+    "5176": {
+      "label": "Frontend",
+      "onAutoForward": "openBrowser"
+    },
+    "8000": {
+      "label": "Backend API",
+      "onAutoForward": "notify"
+    }
+  },
   "containerUser": "developer",
   "remoteUser": "developer",
   "containerEnv": {

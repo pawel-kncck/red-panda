@@ -1,29 +1,29 @@
-import { useState } from 'react'
-import { 
-  Box, 
-  Button, 
-  FormControl, 
-  FormLabel, 
-  Input, 
-  Select,
-  VStack,
-  Text,
+import { client } from "@/client"
+import type { LLMProvider } from "@/types"
+import {
   Alert,
   AlertIcon,
+  Box,
+  Button,
+  Flex,
+  FormControl,
+  FormLabel,
+  IconButton,
+  Input,
   InputGroup,
   InputRightElement,
-  IconButton,
+  Select,
+  Text,
+  VStack,
   useToast,
-  Flex
 } from "@chakra-ui/react"
+import { useState } from "react"
 import { FiEye, FiEyeOff } from "react-icons/fi"
-import { client } from '@/client'
-import type { LLMProvider } from '@/types'
 
 export const APIKeySettings = () => {
   const toast = useToast()
   const [provider, setProvider] = useState<LLMProvider>(LLMProvider.OPENAI)
-  const [apiKey, setApiKey] = useState('')
+  const [apiKey, setApiKey] = useState("")
   const [showKey, setShowKey] = useState(false)
   const [isValidating, setIsValidating] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
@@ -31,10 +31,10 @@ export const APIKeySettings = () => {
   const handleValidate = async () => {
     setIsValidating(true)
     try {
-      const response = await client.POST('/api/settings/validate-api-key', {
-        body: { provider, api_key: apiKey }
+      const response = await client.POST("/api/settings/validate-api-key", {
+        body: { provider, api_key: apiKey },
       })
-      
+
       if (response.data?.valid) {
         toast({
           title: "API key is valid",
@@ -62,21 +62,21 @@ export const APIKeySettings = () => {
   const handleSave = async () => {
     setIsSaving(true)
     try {
-      await client.PUT('/api/settings/api-keys', {
+      await client.PUT("/api/settings/api-keys", {
         body: {
           provider,
-          api_key: apiKey
-        }
+          api_key: apiKey,
+        },
       })
-      
+
       toast({
         title: "API key saved",
         description: "Your API key has been securely stored",
         status: "success",
         duration: 3000,
       })
-      
-      setApiKey('')
+
+      setApiKey("")
     } catch (error) {
       toast({
         title: "Failed to save API key",
@@ -96,14 +96,15 @@ export const APIKeySettings = () => {
 
       <Alert status="info" mb={4}>
         <AlertIcon />
-        Your API keys are encrypted and stored securely. They are never shared or logged.
+        Your API keys are encrypted and stored securely. They are never shared
+        or logged.
       </Alert>
 
       <VStack spacing={4} align="stretch">
         <FormControl>
           <FormLabel>Provider</FormLabel>
-          <Select 
-            value={provider} 
+          <Select
+            value={provider}
             onChange={(e) => setProvider(e.target.value as LLMProvider)}
           >
             <option value="openai">OpenAI</option>
@@ -118,7 +119,7 @@ export const APIKeySettings = () => {
               type={showKey ? "text" : "password"}
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
-              placeholder={`Enter your ${provider === 'openai' ? 'OpenAI' : 'Anthropic'} API key`}
+              placeholder={`Enter your ${provider === "openai" ? "OpenAI" : "Anthropic"} API key`}
             />
             <InputRightElement>
               <IconButton

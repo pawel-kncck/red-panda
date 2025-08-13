@@ -1,40 +1,44 @@
-import { useState } from 'react'
-import { 
-  Box, 
-  Flex, 
-  Text, 
-  Table, 
-  Thead, 
-  Tbody, 
-  Tr, 
-  Th, 
-  Td, 
+import { fileService } from "@/services/api"
+import {
+  Box,
+  Flex,
   IconButton,
   Spinner,
-  useToast
+  Table,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+  useToast,
 } from "@chakra-ui/react"
-import { FiTrash2, FiDownload } from "react-icons/fi"
-import { format } from 'date-fns'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { fileService } from '@/services/api'
-import { FileUploader } from './FileUploader'
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { format } from "date-fns"
+import { useState } from "react"
+import { FiDownload, FiTrash2 } from "react-icons/fi"
+import { FileUploader } from "./FileUploader"
 
 export const FilesPage = () => {
   const toast = useToast()
   const queryClient = useQueryClient()
-  
-  const { data: files, isLoading, refetch } = useQuery({
-    queryKey: ['files'],
+
+  const {
+    data: files,
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["files"],
     queryFn: async () => {
       const response = await fileService.list()
       return response.data?.items || []
-    }
+    },
   })
 
   const deleteMutation = useMutation({
     mutationFn: (id: string) => fileService.delete(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['files'] })
+      queryClient.invalidateQueries({ queryKey: ["files"] })
       toast({
         title: "File deleted",
         status: "success",
@@ -47,7 +51,7 @@ export const FilesPage = () => {
         status: "error",
         duration: 5000,
       })
-    }
+    },
   })
 
   const handleDelete = (id: string, name: string) => {
@@ -57,19 +61,19 @@ export const FilesPage = () => {
   }
 
   const formatFileSize = (bytes: number) => {
-    if (bytes < 1024) return bytes + ' B'
-    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB'
-    return (bytes / (1024 * 1024)).toFixed(1) + ' MB'
+    if (bytes < 1024) return `${bytes} B`
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
   }
 
   return (
     <Box p={6}>
       <Flex justify="space-between" align="center" mb={6}>
         <Box>
-          <Text fontSize="2xl" fontWeight="bold">Files</Text>
-          <Text color="gray.500">
-            {files?.length || 0} files uploaded
+          <Text fontSize="2xl" fontWeight="bold">
+            Files
           </Text>
+          <Text color="gray.500">{files?.length || 0} files uploaded</Text>
         </Box>
       </Flex>
 
@@ -105,7 +109,7 @@ export const FilesPage = () => {
                   <Td>{file.filename}</Td>
                   <Td>{formatFileSize(file.size)}</Td>
                   <Td>{file.content_type}</Td>
-                  <Td>{format(new Date(file.created_at), 'MMM d, yyyy')}</Td>
+                  <Td>{format(new Date(file.created_at), "MMM d, yyyy")}</Td>
                   <Td>
                     <Flex gap={2}>
                       <IconButton

@@ -28,12 +28,12 @@ export const system = createSystem(defaultConfig, {
           200: { value: "#fa9e9a" },
           300: { value: "#f87771" },
           400: { value: "#f65953" },
-          500: { value: "#f43c35" },  // Red Panda primary
+          500: { value: "#f43c35" }, // Red Panda primary
           600: { value: "#e6332e" },
           700: { value: "#d42925" },
           800: { value: "#c3201d" },
           900: { value: "#a20e0b" },
-        }
+        },
       },
     },
     recipes: {

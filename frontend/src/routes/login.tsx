@@ -65,7 +65,13 @@ function Login() {
         gap={4}
         centerContent
       >
-        <Text fontSize="3xl" fontWeight="bold" color="red.500" alignSelf="center" mb={2}>
+        <Text
+          fontSize="3xl"
+          fontWeight="bold"
+          color="red.500"
+          alignSelf="center"
+          mb={2}
+        >
           🐼 Red Panda
         </Text>
         <Text fontSize="md" color="gray.600" alignSelf="center" mb={4}>

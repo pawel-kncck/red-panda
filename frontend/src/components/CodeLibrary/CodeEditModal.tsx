@@ -1,26 +1,26 @@
-import { useState, useEffect } from 'react'
+import { useCodeBlock, useUpdateCodeBlock } from "@/hooks/useCodeBlocks"
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  ModalCloseButton,
   Button,
   FormControl,
   FormLabel,
+  HStack,
   Input,
-  Textarea,
-  useToast,
-  VStack,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Tag,
-  TagLabel,
   TagCloseButton,
+  TagLabel,
+  Textarea,
+  VStack,
   Wrap,
-  HStack
+  useToast,
 } from "@chakra-ui/react"
-import { useCodeBlock, useUpdateCodeBlock } from '@/hooks/useCodeBlocks'
+import { useEffect, useState } from "react"
 
 interface CodeEditModalProps {
   codeBlockId: string
@@ -31,15 +31,15 @@ export const CodeEditModal = ({ codeBlockId, onClose }: CodeEditModalProps) => {
   const { data: codeBlock } = useCodeBlock(codeBlockId)
   const updateMutation = useUpdateCodeBlock()
   const toast = useToast()
-  
-  const [description, setDescription] = useState('')
+
+  const [description, setDescription] = useState("")
   const [tags, setTags] = useState<string[]>([])
-  const [newTag, setNewTag] = useState('')
-  const [code, setCode] = useState('')
+  const [newTag, setNewTag] = useState("")
+  const [code, setCode] = useState("")
 
   useEffect(() => {
     if (codeBlock) {
-      setDescription(codeBlock.description || '')
+      setDescription(codeBlock.description || "")
       setTags(codeBlock.tags || [])
       setCode(codeBlock.code)
     }
@@ -48,12 +48,12 @@ export const CodeEditModal = ({ codeBlockId, onClose }: CodeEditModalProps) => {
   const handleAddTag = () => {
     if (newTag && !tags.includes(newTag)) {
       setTags([...tags, newTag])
-      setNewTag('')
+      setNewTag("")
     }
   }
 
   const handleRemoveTag = (tagToRemove: string) => {
-    setTags(tags.filter(tag => tag !== tagToRemove))
+    setTags(tags.filter((tag) => tag !== tagToRemove))
   }
 
   const handleSave = async () => {
@@ -63,8 +63,8 @@ export const CodeEditModal = ({ codeBlockId, onClose }: CodeEditModalProps) => {
         data: {
           description,
           tags,
-          code
-        }
+          code,
+        },
       })
       toast({
         title: "Code block updated",
@@ -101,7 +101,7 @@ export const CodeEditModal = ({ codeBlockId, onClose }: CodeEditModalProps) => {
             <FormControl>
               <FormLabel>Tags</FormLabel>
               <Wrap mb={2}>
-                {tags.map(tag => (
+                {tags.map((tag) => (
                   <Tag key={tag} size="md" colorScheme="blue">
                     <TagLabel>{tag}</TagLabel>
                     <TagCloseButton onClick={() => handleRemoveTag(tag)} />
@@ -113,7 +113,7 @@ export const CodeEditModal = ({ codeBlockId, onClose }: CodeEditModalProps) => {
                   value={newTag}
                   onChange={(e) => setNewTag(e.target.value)}
                   placeholder="Add a tag"
-                  onKeyPress={(e) => e.key === 'Enter' && handleAddTag()}
+                  onKeyPress={(e) => e.key === "Enter" && handleAddTag()}
                 />
                 <Button onClick={handleAddTag}>Add</Button>
               </HStack>
@@ -135,8 +135,8 @@ export const CodeEditModal = ({ codeBlockId, onClose }: CodeEditModalProps) => {
           <Button variant="ghost" mr={3} onClick={onClose}>
             Cancel
           </Button>
-          <Button 
-            colorScheme="brand" 
+          <Button
+            colorScheme="brand"
             onClick={handleSave}
             isLoading={updateMutation.isPending}
           >

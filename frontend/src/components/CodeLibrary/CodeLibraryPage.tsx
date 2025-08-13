@@ -1,49 +1,45 @@
-import { useState } from 'react'
-import { 
-  Box, 
-  Button, 
-  Flex, 
-  Grid, 
-  Input, 
-  InputGroup, 
-  InputLeftElement, 
-  Text,
+import { useCodeBlocks } from "@/hooks/useCodeBlocks"
+import {
+  Box,
+  Button,
+  Flex,
+  Grid,
+  Input,
+  InputGroup,
+  InputLeftElement,
   Spinner,
   Tag,
-  TagLabel,
   TagCloseButton,
-  Wrap
+  TagLabel,
+  Text,
+  Wrap,
 } from "@chakra-ui/react"
-import { FiSearch, FiFilter } from "react-icons/fi"
-import { useNavigate } from '@tanstack/react-router'
-import { useCodeBlocks } from '@/hooks/useCodeBlocks'
-import { CodeCard } from './CodeCard'
-import { CodeEditModal } from './CodeEditModal'
+import { useNavigate } from "@tanstack/react-router"
+import { useState } from "react"
+import { FiFilter, FiSearch } from "react-icons/fi"
+import { CodeCard } from "./CodeCard"
+import { CodeEditModal } from "./CodeEditModal"
 
 export const CodeLibraryPage = () => {
   const navigate = useNavigate()
-  const [search, setSearch] = useState('')
+  const [search, setSearch] = useState("")
   const [selectedTags, setSelectedTags] = useState<string[]>([])
   const [editingId, setEditingId] = useState<string | null>(null)
   const { data: codeBlocks, isLoading } = useCodeBlocks(search, selectedTags)
 
   const allTags = Array.from(
-    new Set(
-      codeBlocks?.items?.flatMap(cb => cb.tags || []) || []
-    )
+    new Set(codeBlocks?.items?.flatMap((cb) => cb.tags || []) || []),
   )
 
   const handleUseInChat = (code: string) => {
     // Navigate to chat with code in context
     // This would need to be implemented with proper state management
-    navigate({ to: '/chat' })
+    navigate({ to: "/chat" })
   }
 
   const toggleTag = (tag: string) => {
-    setSelectedTags(prev => 
-      prev.includes(tag) 
-        ? prev.filter(t => t !== tag)
-        : [...prev, tag]
+    setSelectedTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
     )
   }
 
@@ -51,7 +47,9 @@ export const CodeLibraryPage = () => {
     <Box p={6}>
       <Flex justify="space-between" align="center" mb={6}>
         <Box>
-          <Text fontSize="2xl" fontWeight="bold">Code Library</Text>
+          <Text fontSize="2xl" fontWeight="bold">
+            Code Library
+          </Text>
           <Text color="gray.500">
             {codeBlocks?.total || 0} code blocks saved
           </Text>
@@ -76,7 +74,7 @@ export const CodeLibraryPage = () => {
               Filter by tags:
             </Text>
             <Wrap>
-              {allTags.map(tag => (
+              {allTags.map((tag) => (
                 <Tag
                   key={tag}
                   size="md"
@@ -102,10 +100,7 @@ export const CodeLibraryPage = () => {
           <Text color="gray.500">No code blocks found</Text>
         </Box>
       ) : (
-        <Grid
-          templateColumns="repeat(auto-fill, minmax(350px, 1fr))"
-          gap={4}
-        >
+        <Grid templateColumns="repeat(auto-fill, minmax(350px, 1fr))" gap={4}>
           {codeBlocks?.items?.map((codeBlock) => (
             <CodeCard
               key={codeBlock.id}

@@ -1,7 +1,15 @@
-import { Box, Badge, Button, Flex, Text, IconButton, useToast } from "@chakra-ui/react"
-import { FiCopy, FiEdit2, FiCode } from "react-icons/fi"
-import { format } from 'date-fns'
-import type { CodeBlock } from '@/types'
+import type { CodeBlock } from "@/types"
+import {
+  Badge,
+  Box,
+  Button,
+  Flex,
+  IconButton,
+  Text,
+  useToast,
+} from "@chakra-ui/react"
+import { format } from "date-fns"
+import { FiCode, FiCopy, FiEdit2 } from "react-icons/fi"
 
 interface CodeCardProps {
   codeBlock: CodeBlock
@@ -21,7 +29,7 @@ export const CodeCard = ({ codeBlock, onEdit, onUseInChat }: CodeCardProps) => {
     })
   }
 
-  const truncatedCode = codeBlock.code.split('\n').slice(0, 5).join('\n')
+  const truncatedCode = codeBlock.code.split("\n").slice(0, 5).join("\n")
 
   return (
     <Box
@@ -37,7 +45,7 @@ export const CodeCard = ({ codeBlock, onEdit, onUseInChat }: CodeCardProps) => {
             {codeBlock.description || "Untitled Code"}
           </Text>
           <Text fontSize="xs" color="gray.500">
-            {format(new Date(codeBlock.created_at), 'MMM d, yyyy')}
+            {format(new Date(codeBlock.created_at), "MMM d, yyyy")}
           </Text>
         </Box>
         <Badge colorScheme="blue" fontSize="xs">
@@ -45,11 +53,11 @@ export const CodeCard = ({ codeBlock, onEdit, onUseInChat }: CodeCardProps) => {
         </Badge>
       </Flex>
 
-      <Box 
-        bg="gray.50" 
+      <Box
+        bg="gray.50"
         _dark={{ bg: "gray.800" }}
-        p={2} 
-        borderRadius="sm" 
+        p={2}
+        borderRadius="sm"
         mb={3}
         fontFamily="mono"
         fontSize="xs"
@@ -57,7 +65,7 @@ export const CodeCard = ({ codeBlock, onEdit, onUseInChat }: CodeCardProps) => {
       >
         <Text as="pre" whiteSpace="pre-wrap">
           {truncatedCode}
-          {codeBlock.code.split('\n').length > 5 && '\n...'}
+          {codeBlock.code.split("\n").length > 5 && "\n..."}
         </Text>
       </Box>
 
@@ -75,7 +83,11 @@ export const CodeCard = ({ codeBlock, onEdit, onUseInChat }: CodeCardProps) => {
         <Button size="sm" leftIcon={<FiCopy />} onClick={copyToClipboard}>
           Copy
         </Button>
-        <Button size="sm" leftIcon={<FiCode />} onClick={() => onUseInChat(codeBlock.code)}>
+        <Button
+          size="sm"
+          leftIcon={<FiCode />}
+          onClick={() => onUseInChat(codeBlock.code)}
+        >
           Use in Chat
         </Button>
         <IconButton

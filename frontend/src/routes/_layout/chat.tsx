@@ -1,21 +1,5 @@
-import { createFileRoute, redirect } from '@tanstack/react-router'
-import { Box } from '@chakra-ui/react'
+import { createFileRoute } from "@tanstack/react-router"
 
-export const Route = createFileRoute('/_layout/chat')({
-  beforeLoad: async ({ context }) => {
-    if (!context.auth.isAuthenticated) {
-      throw redirect({ to: '/login' })
-    }
-  },
-  component: ChatIndex,
+export const Route = createFileRoute("/_layout/chat")({
+  component: () => <div>Hello /_layout/chat!</div>,
 })
-
-function ChatIndex() {
-  return (
-    <Box h="full" display="flex" alignItems="center" justifyContent="center">
-      <Box textAlign="center" color="gray.500">
-        Select a conversation or create a new one to start chatting
-      </Box>
-    </Box>
-  )
-}
