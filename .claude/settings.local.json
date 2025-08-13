@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(alembic revision:*)",
+      "Bash(PYTHONPATH=/Users/pkuncicki/Development/red-panda/backend alembic revision --autogenerate -m \"Add Red Panda core models\")",
+      "Bash(docker compose:*)",
+      "Bash(lsof:*)",
+      "Bash(docker rmi:*)",
+      "Bash(true)",
+      "Bash(git add:*)",
+      "Bash(curl:*)",
+      "Bash(git commit:*)",
+      "Bash(fastapi dev:*)",
+      "Bash(python:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npm install)",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_type",
+      "mcp__playwright__browser_click",
+      "mcp__playwright__browser_wait_for",
+      "Bash(pip install:*)",
+      "Bash(pkill:*)",
+      "Bash(psql:*)",
+      "Bash(mv:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

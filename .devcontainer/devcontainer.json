@@ -1,0 +1,43 @@
+// .devcontainer/devcontainer.json
+{
+  "name": "Isolated YOLO Dev",
+  "build": { "dockerfile": "Dockerfile", "context": ".." },
+
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+  "workspaceFolder": "/workspace",
+
+  "mounts": [
+    // VS Code Server needs writable directories
+    "source=red-panda-vscode-server,target=/home/node/.vscode-server,type=volume",
+    "source=red-panda-vscode-server-insiders,target=/home/node/.vscode-server-insiders,type=volume",
+    "source=red-panda-vscode-extensions,target=/home/node/.vscode-server/extensions,type=volume",
+    // Mount the entire home directory as a volume to allow config files
+    "source=red-panda-home,target=/home/node,type=volume"
+  ],
+
+  "runArgs": [
+    "--cap-drop=ALL",
+    "--security-opt",
+    "no-new-privileges",
+    "--pids-limit=512",
+    "--memory=4g",
+    "--cpus=2",
+    "--read-only",
+    "--tmpfs",
+    "/tmp:rw,nosuid,nodev,mode=1777"
+  ],
+
+  "containerUser": "node",
+  "remoteUser": "node",
+
+  "containerEnv": {
+    "IS_SANDBOX": "1",
+    "ANTHROPIC_API_KEY": "${localEnv:ANTHROPIC_API_KEY}"
+  },
+
+  "postCreateCommand": "bash -lc \"if [ -f package-lock.json ]; then npm ci || npm i; fi\"",
+
+  "customizations": {
+    "vscode": { "extensions": ["dbaeumer.vscode-eslint"] }
+  }
+}
