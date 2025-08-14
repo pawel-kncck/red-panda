@@ -1,4 +1,4 @@
-import { Box, Button, Flex, IconButton, Text, Textarea } from "@chakra-ui/react"
+import { Box, Flex, IconButton, Text, Textarea } from "@chakra-ui/react"
 import { useRef, useState } from "react"
 import { FiPaperclip, FiSend, FiX } from "react-icons/fi"
 

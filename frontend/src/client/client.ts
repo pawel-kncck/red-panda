@@ -6,7 +6,6 @@ import {
   FilesService,
   LoginService,
   MessagesService,
-  PrivateService,
   SettingsService,
   UsersService,
   UtilsService,
@@ -24,57 +23,57 @@ export const client = {
   // Auth endpoints
   POST: (url: string, options?: any) => {
     if (url === "/api/v1/login/access-token") {
-      return LoginService.loginAccessToken(options)
+      return LoginService.loginAccessToken({ formData: options.body })
     }
     if (url === "/api/v1/login/test-token") {
       return LoginService.testToken()
     }
     if (url === "/api/v1/users/signup") {
-      return UsersService.registerUser(options)
+      return UsersService.registerUser({ requestBody: options.body })
     }
     if (url.startsWith("/api/v1/password-recovery/")) {
       const email = url.split("/").pop()!
       return LoginService.recoverPassword({ email })
     }
     if (url === "/api/v1/reset-password/") {
-      return LoginService.resetPassword(options)
+      return LoginService.resetPassword({ requestBody: options.body })
     }
     // Conversations
     if (url === "/api/v1/conversations/") {
-      return ConversationsService.createNewConversation(options)
+      return ConversationsService.createNewConversation({ requestBody: options.body })
     }
     // Messages
     if (url.includes("/messages/")) {
       const parts = url.split("/")
       const conversationId = parts[parts.indexOf("conversations") + 1]
-      return MessagesService.createNewMessage({ conversationId, ...options })
+      return MessagesService.createNewMessage({ conversationId, requestBody: options.body })
     }
     // Code blocks
     if (url === "/api/v1/code-blocks/") {
-      return CodeBlocksService.createNewCodeBlock(options)
+      return CodeBlocksService.createNewCodeBlock({ requestBody: options.body })
     }
     // Files
     if (url === "/api/v1/files/upload") {
-      return FilesService.uploadFile(options)
+      return FilesService.uploadFile({ formData: options.body })
     }
     // Settings
     if (url === "/api/v1/settings/api-keys") {
-      return SettingsService.setApiKey(options)
+      return SettingsService.setApiKey({ requestBody: options.body })
     }
     // Users
     if (url === "/api/v1/users/") {
-      return UsersService.createUser(options)
+      return UsersService.createUser({ requestBody: options.body })
     }
     // Chat
     if (url === "/api/v1/chat/complete") {
-      return ChatService.chatCompletion(options)
+      return ChatService.chatCompletion({ requestBody: options.body })
     }
     if (url === "/api/v1/chat/stream") {
-      return ChatService.chatStream(options)
+      return ChatService.chatStream({ requestBody: options.body })
     }
     // Utils
     if (url === "/api/v1/utils/test-email/") {
-      return UtilsService.testEmail(options)
+      return UtilsService.testEmail({ requestBody: options.body })
     }
     throw new Error(`Unhandled POST endpoint: ${url}`)
   },
@@ -157,21 +156,21 @@ export const client = {
   PATCH: (url: string, options?: any) => {
     // Users
     if (url === "/api/v1/users/me") {
-      return UsersService.updateUserMe(options)
+      return UsersService.updateUserMe({ requestBody: options.body })
     }
     if (url === "/api/v1/users/me/password") {
-      return UsersService.updatePasswordMe(options)
+      return UsersService.updatePasswordMe({ requestBody: options.body })
     }
     if (url.startsWith("/api/v1/users/") && url.split("/").length === 5) {
       const userId = url.split("/").pop()!
-      return UsersService.updateUser({ userId, ...options })
+      return UsersService.updateUser({ userId, requestBody: options.body })
     }
     // Conversations
     if (url.match(/^\/api\/v1\/conversations\/[^/]+$/)) {
       const conversationId = url.split("/").pop()!
       return ConversationsService.updateExistingConversation({
         conversationId,
-        ...options,
+        requestBody: options.body,
       })
     }
     // Code blocks
@@ -179,13 +178,13 @@ export const client = {
       const codeBlockId = url.split("/").pop()!
       return CodeBlocksService.updateExistingCodeBlock({
         codeBlockId,
-        ...options,
+        requestBody: options.body,
       })
     }
     throw new Error(`Unhandled PATCH endpoint: ${url}`)
   },
 
-  DELETE: (url: string, options?: any) => {
+  DELETE: (url: string, _options?: any) => {
     // Users
     if (url === "/api/v1/users/me") {
       return UsersService.deleteUserMe()

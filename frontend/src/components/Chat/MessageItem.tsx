@@ -1,7 +1,7 @@
+import { toaster } from "@/components/ui/toaster"
 import type { Message } from "@/types"
 import { MessageRole } from "@/types"
 import { Box, Flex, Text } from "@chakra-ui/react"
-import { toaster } from "@/components/ui/toaster"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import { CodeBlock } from "./CodeBlock"
@@ -18,7 +18,7 @@ export const MessageItem = ({ message, onSaveCode }: MessageItemProps) => {
     navigator.clipboard.writeText(text)
     toaster.create({
       title: "Copied to clipboard",
-      status: "success",
+      type: "success",
       duration: 2000,
     })
   }
@@ -52,12 +52,13 @@ export const MessageItem = ({ message, onSaveCode }: MessageItemProps) => {
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           components={{
-            code({ inline, className, children }) {
+            code({ className, children }) {
               const match = /language-(\w+)/.exec(className || "")
               const language = match ? match[1] : "text"
               const codeString = String(children).replace(/\n$/, "")
+              const isCodeBlock = className !== undefined
 
-              if (!inline && match) {
+              if (isCodeBlock && match) {
                 return (
                   <CodeBlock
                     code={codeString}

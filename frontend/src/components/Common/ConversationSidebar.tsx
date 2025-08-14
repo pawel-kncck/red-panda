@@ -18,7 +18,7 @@ import {
   useParams,
 } from "@tanstack/react-router"
 import { format } from "date-fns"
-import { FiMessageSquare, FiPlus, FiTrash2 } from "react-icons/fi"
+import { FiMessageSquare, FiTrash2 } from "react-icons/fi"
 
 interface ConversationSidebarProps {
   onClose?: () => void
@@ -26,7 +26,7 @@ interface ConversationSidebarProps {
 
 export const ConversationSidebar = ({ onClose }: ConversationSidebarProps) => {
   const navigate = useNavigate()
-  const params = useParams({ from: "/_layout/chat/$conversationId" })
+  const params = useParams({ from: "/_layout/chat/$conversationId" }) as { conversationId?: string }
   const { data: conversations, isLoading } = useConversations()
   const createMutation = useCreateConversation()
   const deleteMutation = useDeleteConversation()
@@ -35,10 +35,10 @@ export const ConversationSidebar = ({ onClose }: ConversationSidebarProps) => {
     const result = await createMutation.mutateAsync({
       title: "New Conversation",
     })
-    if (result?.id) {
+    if ((result as any)?.id) {
       navigate({
         to: "/chat/$conversationId",
-        params: { conversationId: result.id },
+        params: { conversationId: (result as any).id },
       })
       onClose?.()
     }

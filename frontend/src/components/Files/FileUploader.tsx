@@ -1,6 +1,6 @@
+import { toaster } from "@/components/ui/toaster"
 import { fileService } from "@/services/api"
 import { Box, Icon, Text, VStack } from "@chakra-ui/react"
-import { toaster } from "@/components/ui/toaster"
 import { useCallback } from "react"
 import { useDropzone } from "react-dropzone"
 import { FiUploadCloud } from "react-icons/fi"
@@ -10,7 +10,6 @@ interface FileUploaderProps {
 }
 
 export const FileUploader = ({ onUploadComplete }: FileUploaderProps) => {
-
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
       for (const file of acceptedFiles) {
@@ -19,21 +18,21 @@ export const FileUploader = ({ onUploadComplete }: FileUploaderProps) => {
           toaster.create({
             title: "File uploaded",
             description: `${file.name} uploaded successfully`,
-            status: "success",
+            type: "success",
             duration: 3000,
           })
         } catch (error) {
           toaster.create({
             title: "Upload failed",
             description: `Failed to upload ${file.name}`,
-            status: "error",
+            type: "error",
             duration: 5000,
           })
         }
       }
       onUploadComplete()
     },
-    [onUploadComplete, toast],
+    [onUploadComplete],
   )
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({

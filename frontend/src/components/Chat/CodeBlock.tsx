@@ -1,8 +1,8 @@
 import { Box, Button, Flex, Text } from "@chakra-ui/react"
 import { Highlight, themes } from "prism-react-renderer"
-import Prism from "prismjs"
 
 // Import additional languages
+import "prismjs"
 import "prismjs/components/prism-python"
 import "prismjs/components/prism-javascript"
 import "prismjs/components/prism-typescript"

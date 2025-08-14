@@ -1,28 +1,26 @@
 import { client } from "@/client"
 import type { LLMProvider } from "@/types"
+import { LLMProvider as LLMProviderEnum } from "@/types"
 import {
   Alert,
-  AlertIcon,
   Box,
   Button,
   Flex,
-  FormControl,
-  FormLabel,
   IconButton,
   Input,
-  InputGroup,
-  InputRightElement,
-  Select,
+  NativeSelectField,
+  NativeSelectRoot,
+  Stack,
   Text,
-  VStack,
-  useToast,
 } from "@chakra-ui/react"
+import { toaster } from "@/components/ui/toaster"
+import { Field } from "@/components/ui/field"
+import { InputGroup } from "@/components/ui/input-group"
 import { useState } from "react"
 import { FiEye, FiEyeOff } from "react-icons/fi"
 
 export const APIKeySettings = () => {
-  const toast = useToast()
-  const [provider, setProvider] = useState<LLMProvider>(LLMProvider.OPENAI)
+  const [provider, setProvider] = useState<LLMProvider>(LLMProviderEnum.OPENAI)
   const [apiKey, setApiKey] = useState("")
   const [showKey, setShowKey] = useState(false)
   const [isValidating, setIsValidating] = useState(false)
@@ -35,23 +33,23 @@ export const APIKeySettings = () => {
         body: { provider, api_key: apiKey },
       })
 
-      if (response.data?.valid) {
-        toast({
+      if ((response as any).data?.valid) {
+        toaster.create({
           title: "API key is valid",
-          status: "success",
+          type: "success",
           duration: 3000,
         })
       } else {
-        toast({
+        toaster.create({
           title: "Invalid API key",
-          status: "error",
+          type: "error",
           duration: 5000,
         })
       }
     } catch (error) {
-      toast({
+      toaster.create({
         title: "Validation failed",
-        status: "error",
+        type: "error",
         duration: 5000,
       })
     } finally {
@@ -62,25 +60,25 @@ export const APIKeySettings = () => {
   const handleSave = async () => {
     setIsSaving(true)
     try {
-      await client.PUT("/api/settings/api-keys", {
+      await client.POST("/api/settings/api-keys", {
         body: {
           provider,
           api_key: apiKey,
         },
       })
 
-      toast({
+      toaster.create({
         title: "API key saved",
         description: "Your API key has been securely stored",
-        status: "success",
+        type: "success",
         duration: 3000,
       })
 
       setApiKey("")
     } catch (error) {
-      toast({
+      toaster.create({
         title: "Failed to save API key",
-        status: "error",
+        type: "error",
         duration: 5000,
       })
     } finally {
@@ -94,63 +92,67 @@ export const APIKeySettings = () => {
         API Key Management
       </Text>
 
-      <Alert status="info" mb={4}>
-        <AlertIcon />
-        Your API keys are encrypted and stored securely. They are never shared
-        or logged.
-      </Alert>
+      <Alert.Root status="info" mb={4}>
+        <Alert.Indicator />
+        <Alert.Content>
+          Your API keys are encrypted and stored securely. They are never shared
+          or logged.
+        </Alert.Content>
+      </Alert.Root>
 
-      <VStack spacing={4} align="stretch">
-        <FormControl>
-          <FormLabel>Provider</FormLabel>
-          <Select
-            value={provider}
-            onChange={(e) => setProvider(e.target.value as LLMProvider)}
+      <Stack gap={4}>
+        <Field label="Provider">
+          <NativeSelectRoot>
+            <NativeSelectField
+              value={provider}
+              onChange={(e) => setProvider(e.target.value as LLMProvider)}
+            >
+              <option value="openai">OpenAI</option>
+              <option value="anthropic">Anthropic</option>
+            </NativeSelectField>
+          </NativeSelectRoot>
+        </Field>
+
+        <Field label="API Key">
+          <InputGroup
+            endElement={
+              <IconButton
+                aria-label={showKey ? "Hide" : "Show"}
+                size="sm"
+                variant="ghost"
+                onClick={() => setShowKey(!showKey)}
+              >
+                {showKey ? <FiEyeOff /> : <FiEye />}
+              </IconButton>
+            }
           >
-            <option value="openai">OpenAI</option>
-            <option value="anthropic">Anthropic</option>
-          </Select>
-        </FormControl>
-
-        <FormControl>
-          <FormLabel>API Key</FormLabel>
-          <InputGroup>
             <Input
               type={showKey ? "text" : "password"}
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
               placeholder={`Enter your ${provider === "openai" ? "OpenAI" : "Anthropic"} API key`}
             />
-            <InputRightElement>
-              <IconButton
-                aria-label={showKey ? "Hide" : "Show"}
-                icon={showKey ? <FiEyeOff /> : <FiEye />}
-                size="sm"
-                variant="ghost"
-                onClick={() => setShowKey(!showKey)}
-              />
-            </InputRightElement>
           </InputGroup>
-        </FormControl>
+        </Field>
 
         <Flex gap={2}>
           <Button
             onClick={handleValidate}
-            isLoading={isValidating}
-            isDisabled={!apiKey}
+            loading={isValidating}
+            disabled={!apiKey}
           >
             Validate Key
           </Button>
           <Button
             colorScheme="brand"
             onClick={handleSave}
-            isLoading={isSaving}
-            isDisabled={!apiKey}
+            loading={isSaving}
+            disabled={!apiKey}
           >
             Save Key
           </Button>
         </Flex>
-      </VStack>
+      </Stack>
     </Box>
   )
 }

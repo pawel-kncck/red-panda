@@ -5,22 +5,15 @@ import {
   IconButton,
   Spinner,
   Table,
-  Tbody,
-  Td,
   Text,
-  Th,
-  Thead,
-  Tr,
-  useToast,
 } from "@chakra-ui/react"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { format } from "date-fns"
-import { useState } from "react"
-import { FiDownload, FiTrash2 } from "react-icons/fi"
+import { FiTrash2 } from "react-icons/fi"
+import { toaster } from "@/components/ui/toaster"
 import { FileUploader } from "./FileUploader"
 
 export const FilesPage = () => {
-  const toast = useToast()
   const queryClient = useQueryClient()
 
   const {
@@ -31,7 +24,7 @@ export const FilesPage = () => {
     queryKey: ["files"],
     queryFn: async () => {
       const response = await fileService.list()
-      return response.data?.items || []
+      return (response as any).data?.items || []
     },
   })
 
@@ -39,16 +32,16 @@ export const FilesPage = () => {
     mutationFn: (id: string) => fileService.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["files"] })
-      toast({
+      toaster.create({
         title: "File deleted",
-        status: "success",
+        type: "success",
         duration: 3000,
       })
     },
     onError: () => {
-      toast({
+      toaster.create({
         title: "Failed to delete file",
-        status: "error",
+        type: "error",
         duration: 5000,
       })
     },
@@ -93,40 +86,41 @@ export const FilesPage = () => {
             <Text color="gray.500">No files uploaded yet</Text>
           </Box>
         ) : (
-          <Table variant="simple">
-            <Thead>
-              <Tr>
-                <Th>Name</Th>
-                <Th>Size</Th>
-                <Th>Type</Th>
-                <Th>Uploaded</Th>
-                <Th>Actions</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
+          <Table.Root>
+            <Table.Header>
+              <Table.Row>
+                <Table.ColumnHeader>Name</Table.ColumnHeader>
+                <Table.ColumnHeader>Size</Table.ColumnHeader>
+                <Table.ColumnHeader>Type</Table.ColumnHeader>
+                <Table.ColumnHeader>Uploaded</Table.ColumnHeader>
+                <Table.ColumnHeader>Actions</Table.ColumnHeader>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
               {files?.map((file: any) => (
-                <Tr key={file.id}>
-                  <Td>{file.filename}</Td>
-                  <Td>{formatFileSize(file.size)}</Td>
-                  <Td>{file.content_type}</Td>
-                  <Td>{format(new Date(file.created_at), "MMM d, yyyy")}</Td>
-                  <Td>
+                <Table.Row key={file.id}>
+                  <Table.Cell>{file.filename}</Table.Cell>
+                  <Table.Cell>{formatFileSize(file.size)}</Table.Cell>
+                  <Table.Cell>{file.content_type}</Table.Cell>
+                  <Table.Cell>{format(new Date(file.created_at), "MMM d, yyyy")}</Table.Cell>
+                  <Table.Cell>
                     <Flex gap={2}>
                       <IconButton
                         aria-label="Delete file"
-                        icon={<FiTrash2 />}
                         size="sm"
                         variant="ghost"
                         colorScheme="red"
                         onClick={() => handleDelete(file.id, file.filename)}
-                        isLoading={deleteMutation.isPending}
-                      />
+                        loading={deleteMutation.isPending}
+                      >
+                        <FiTrash2 />
+                      </IconButton>
                     </Flex>
-                  </Td>
-                </Tr>
+                  </Table.Cell>
+                </Table.Row>
               ))}
-            </Tbody>
-          </Table>
+            </Table.Body>
+          </Table.Root>
         )}
       </Box>
     </Box>

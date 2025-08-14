@@ -7,7 +7,7 @@ export const useCodeBlocks = (search?: string, tags?: string[]) => {
     queryKey: ["codeBlocks", search, tags],
     queryFn: async () => {
       const response = await codeBlockService.list(0, 100, search, tags)
-      return response.data
+      return (response as any).data
     },
   })
 }
@@ -18,7 +18,7 @@ export const useCodeBlock = (id: string | undefined) => {
     queryFn: async () => {
       if (!id) return null
       const response = await codeBlockService.get(id)
-      return response.data
+      return (response as any).data
     },
     enabled: !!id,
   })
@@ -29,7 +29,7 @@ export const useUpdateCodeBlock = () => {
 
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: CodeBlockUpdate }) =>
-      codeBlockService.update(id, data),
+      codeBlockService.update(id, data as any) as any,
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ["codeBlock", variables.id] })
       queryClient.invalidateQueries({ queryKey: ["codeBlocks"] })

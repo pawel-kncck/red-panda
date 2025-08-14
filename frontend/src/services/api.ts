@@ -1,80 +1,62 @@
 import { client } from "@/client"
 import type {
-  ChatRequest,
   CodeBlock,
   Conversation,
   ConversationCreate,
-  Message,
 } from "@/types"
 
 export const conversationService = {
   list: (skip = 0, limit = 20) =>
-    client.GET("/api/conversations", {
+    client.GET("/api/v1/conversations/", {
       params: { query: { skip, limit } },
     }),
 
   get: (id: string) =>
-    client.GET("/api/conversations/{conversation_id}", {
-      params: { path: { conversation_id: id } },
-    }),
+    client.GET(`/api/v1/conversations/${id}`, {}),
 
   create: (data: ConversationCreate) =>
-    client.POST("/api/conversations", { body: data }),
+    client.POST("/api/v1/conversations/", { body: data }),
 
   update: (id: string, data: Partial<Conversation>) =>
-    client.PATCH("/api/conversations/{conversation_id}", {
-      params: { path: { conversation_id: id } },
-      body: data,
-    }),
+    client.PATCH(`/api/v1/conversations/${id}`, { body: data }),
 
   delete: (id: string) =>
-    client.DELETE("/api/conversations/{conversation_id}", {
-      params: { path: { conversation_id: id } },
-    }),
+    client.DELETE(`/api/v1/conversations/${id}`, {}),
 }
 
 export const messageService = {
   list: (conversationId: string) =>
-    client.GET("/api/conversations/{conversation_id}/messages", {
-      params: { path: { conversation_id: conversationId } },
-    }),
+    client.GET(`/api/v1/conversations/${conversationId}/messages/`, {}),
 }
 
 export const codeBlockService = {
   list: (skip = 0, limit = 20, search?: string, tags?: string[]) =>
-    client.GET("/api/code-blocks", {
+    client.GET("/api/v1/code-blocks/", {
       params: {
         query: { skip, limit, search, tags: tags?.join(",") },
       },
     }),
 
   get: (id: string) =>
-    client.GET("/api/code-blocks/{code_block_id}", {
-      params: { path: { code_block_id: id } },
-    }),
+    client.GET(`/api/v1/code-blocks/${id}`, {}),
 
   update: (id: string, data: Partial<CodeBlock>) =>
-    client.PATCH("/api/code-blocks/{code_block_id}", {
-      params: { path: { code_block_id: id } },
-      body: data,
-    }),
+    client.PATCH(`/api/v1/code-blocks/${id}`, { body: data }),
 
-  create: (data: any) => client.POST("/api/code-blocks", { body: data }),
+  create: (data: any) => client.POST("/api/v1/code-blocks/", { body: data }),
 }
 
 export const fileService = {
   upload: (file: File) => {
     const formData = new FormData()
     formData.append("file", file)
-    return client.POST("/api/files/upload", {
+    return client.POST("/api/v1/files/upload", {
       body: formData as any,
     })
   },
 
-  list: () => client.GET("/api/files"),
+  list: () => client.GET("/api/v1/files/", {}),
 
   delete: (id: string) =>
-    client.DELETE("/api/files/{file_id}", {
-      params: { path: { file_id: id } },
-    }),
+    client.DELETE(`/api/v1/files/${id}`, {}),
 }

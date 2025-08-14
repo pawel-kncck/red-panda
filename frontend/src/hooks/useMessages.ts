@@ -6,7 +6,7 @@ export const useMessages = (conversationId: string) => {
     queryKey: ["messages", conversationId],
     queryFn: async () => {
       const response = await messageService.list(conversationId)
-      return response.data?.items || []
+      return (response as any).data?.items || []
     },
     enabled: !!conversationId,
   })

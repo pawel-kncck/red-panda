@@ -35,7 +35,7 @@ export const ChatInterface = ({
     scrollToBottom()
   }, [messages, streamingMessage, scrollToBottom])
 
-  const handleSendMessage = async (content: string, fileId?: string) => {
+  const handleSendMessage = async (content: string, _fileId?: string) => {
     setIsStreaming(true)
     setStreamingMessage("")
 
@@ -133,7 +133,7 @@ export const ChatInterface = ({
           </Flex>
         )}
 
-        {messages?.map((message) => (
+        {messages?.map((message: Message) => (
           <MessageItem
             key={message.id}
             message={message}
@@ -150,6 +150,7 @@ export const ChatInterface = ({
                 role: MessageRole.ASSISTANT,
                 conversation_id: conversationId,
                 created_at: new Date().toISOString(),
+                code_block_ids: [],
               } as Message
             }
             onSaveCode={handleSaveCode}

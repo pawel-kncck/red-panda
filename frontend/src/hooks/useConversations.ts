@@ -7,7 +7,7 @@ export const useConversations = () => {
     queryKey: ["conversations"],
     queryFn: async () => {
       const response = await conversationService.list(0, 100)
-      return response.data
+      return (response as any).data
     },
   })
 }
@@ -18,7 +18,7 @@ export const useConversation = (id: string | undefined) => {
     queryFn: async () => {
       if (!id) return null
       const response = await conversationService.get(id)
-      return response.data
+      return (response as any).data
     },
     enabled: !!id,
   })
@@ -40,7 +40,7 @@ export const useUpdateConversation = () => {
 
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: Partial<Conversation> }) =>
-      conversationService.update(id, data),
+      conversationService.update(id, data) as any,
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
         queryKey: ["conversation", variables.id],

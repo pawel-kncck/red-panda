@@ -1,58 +1,61 @@
-// .devcontainer/devcontainer.json (for Python-base alternative)
 {
-  "name": "Isolated YOLO Dev",
-  "build": {
-    "dockerfile": "Dockerfile",
-    "context": ".."
-  },
-  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
-  "workspaceFolder": "/workspace",
-  "mounts": [
-    // VS Code Server needs writable directories
-    "source=red-panda-vscode-server,target=/home/developer/.vscode-server,type=volume",
-    "source=red-panda-vscode-server-insiders,target=/home/developer/.vscode-server-insiders,type=volume",
-    "source=red-panda-vscode-extensions,target=/home/developer/.vscode-server/extensions,type=volume",
-    // Mount the entire home directory as a volume to allow config files
-    "source=red-panda-home,target=/home/developer,type=volume"
+  "name": "Red Panda Dev Environment",
+  "dockerComposeFile": [
+    "../docker-compose.yml",
+    "../docker-compose.override.yml"
   ],
-  "runArgs": [
-    "--cap-drop=ALL",
-    "--security-opt",
-    "no-new-privileges",
-    "--pids-limit=512",
-    "--memory=4g",
-    "--cpus=2",
-    "--read-only",
-    "--tmpfs",
-    "/tmp:rw,nosuid,nodev,mode=1777"
-  ],
+  "service": "backend",
+  "workspaceFolder": "/app",
   "forwardPorts": [
-    5176,
-    8000
+    5173,
+    8000,
+    5432,
+    8080
   ],
   "portsAttributes": {
-    "5176": {
+    "5173": {
       "label": "Frontend",
       "onAutoForward": "openBrowser"
     },
     "8000": {
       "label": "Backend API",
       "onAutoForward": "notify"
+    },
+    "5432": {
+      "label": "PostgreSQL",
+      "onAutoForward": "silent"
+    },
+    "8080": {
+      "label": "Adminer",
+      "onAutoForward": "notify"
     }
   },
-  "containerUser": "developer",
-  "remoteUser": "developer",
-  "containerEnv": {
-    "IS_SANDBOX": "1",
-    "ANTHROPIC_API_KEY": "${localEnv:ANTHROPIC_API_KEY}"
-  },
-  "postCreateCommand": "echo 'alias claude=\"claude-code --dangerously-skip-permissions\"' >> ~/.bashrc && bash -lc \"if [ -f package-lock.json ]; then npm ci || npm i; fi && if [ -f requirements.txt ]; then pip install -r requirements.txt; fi\"",
+  "postCreateCommand": "pip install --upgrade pip && cd /app && pip install -e . && cd /workspace/frontend && npm install",
   "customizations": {
     "vscode": {
       "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.black-formatter",
         "dbaeumer.vscode-eslint",
-        "ms-python.python"
-      ]
+        "esbenp.prettier-vscode",
+        "ms-azuretools.vscode-docker"
+      ],
+      "settings": {
+        "python.defaultInterpreter": "/usr/local/bin/python",
+        "python.linting.enabled": true,
+        "python.linting.pylintEnabled": false,
+        "python.linting.flake8Enabled": false,
+        "python.formatting.provider": "black",
+        "python.formatting.blackPath": "/usr/local/bin/black",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": true
+        }
+      }
     }
+  },
+  "remoteEnv": {
+    "PYTHONPATH": "/app"
   }
 }

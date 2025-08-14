@@ -12,6 +12,9 @@ export type {
   ChatRequest,
 } from "@/client"
 
+// Import types for aliases
+import type { ConversationPublic, CodeBlockPublic, MessagePublic } from "@/client"
+
 // Type aliases for simpler names
 export type Conversation = ConversationPublic
 export type CodeBlock = CodeBlockPublic
